@@ -1,0 +1,78 @@
+{% extends "recadmin/base.html" %}
+{% block content %}
+<div class="x_content">
+    <div>
+        <h2>缓存管理</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel" style="min-height: 300px;">
+                <div class="x_title">
+                    <h3>删除一个域名的所有缓存</h3>
+                </div>
+                <div class="x_content">
+                    <form class="form-horizontal" action="{% url 'recadmin:cache' %}" method="get">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qname">域名信息</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control" name="qname">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 col-xs-12 control-label">类型(可选)</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="checkbox">
+                                    <label>
+                                      <input type="checkbox" name="type" value="A">A
+                                    </label>
+                                    <label>
+                                      <input type="checkbox" name="type" value="AAAA">AAAA
+                                    </label>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="form-group">
+                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                <button type="submit" class="btn btn-success">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel" style="min-height: 300px;">
+                <div class="x_title">
+                    <h3>删除一个zone的所有缓存</h3>
+                </div>
+                <div class="x_content">
+                    <form class="form-horizontal" action="{% url 'recadmin:cache' %}" method="get">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qname">zone信息</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" class="form-control" name="zone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                <button type="submit" class="btn btn-success">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}        
+    </div>    
+</div>
+{% endblock %} 
+{% block js %}
+<script type="text/javascript">
+    $('div.alert').delay(3000).fadeOut('slow');
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+.secdomainacl-btnadd select{
+    width:150px;
+    height:200px; 
+    float:left; 
+    padding:4px;
+}
+.secdomainacl-btnadd span{
+    padding: 5px 10px;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    border-radius: 3px;
+    position: relative;
+    cursor:pointer;
+    display:inline-block;
+    width:35px;
+    margin:0px 10px;
+    color:#fff;
+}
+.d-content p{
+    margin:0;
+}
+.d-content div{
+    overflow-y: hidden;
+}

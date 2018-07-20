@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# sync unbound forward zone
+# sync unbound local zone
+
+BASE="/tmp"
+Dest="/home/unbound/usr/local/etc/unbound"
+
+. /usr/local/yeti/config/setting.sh
+Current_dir='/home/zdl/Ubuntu_zdl/RECMS/remote'
+source ${Current_dir}/pool_setting.sh   #该配置必须和RECMS项目下recadmin.remote.extra_settings配置必须完全一致，否则无法分发配置
+
+#unboud_server是竖井配置，全局配置，无法管理
+for s in $unbound_servers; do
+    if [[ $s =~ ':' ]]
+    then
+        #echo "冒分为ipv6地址，需要中括号"
+        ssh root@[$s] rm -rf  $Dest
+        ssh root@[$s] mkdir -p  $Dest
+        rsync $BASE/gfw.zone $BASE/unbound-local-data.conf root@[$s]:$Dest
+    else
+        #echo "ipv4地址"
+        ssh root@$s rm -rf  $Dest
+        ssh root@$s mkdir -p  $Dest
+        rsync $BASE/gfw.zone $BASE/unbound-local-data.conf root@$s:$Dest
+    fi
+done
+
+for key in $(echo "${!dic[*]}")
+do
+    host=${dic[$key]}
+    for j in $(echo $host|tr " " "\n")
+	do
+	    if [[ $j =~ ':' ]]
+	    then
+            ssh root@[$j] mkdir  $Dest/$key
+            rsync $BASE/$key/gfw.zone $BASE/$key/unbound-local-data.conf root@[$j]:$Dest/$key
+        else
+            ssh root@$j mkdir  $Dest/$key
+            rsync $BASE/$key/gfw.zone $BASE/$key/unbound-local-data.conf root@$j:$Dest/$key
+        fi
+	done
+done

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+#addAction(makeRule("240c:f:1:4000::/64"), PoolAction("114dns"))
+#addAction(makeRule({"240c:f:1:4000::/64", "240c:f:1:32::/64"}), PoolAction("114dns"))
+
+if [ $# -ne 2 ]; then
+    echo "usage: $0 acls poolname"
+    echo "example: $0 192.168.0.0/24,192.168.1.0/24 edu"
+    echo "example: $0 192.168.0.0/24 edu"
+    exit 1
+fi
+
+ACLS="$1"
+POOL="$2"
+CONF="/etc/dnsdist/dnsdist.conf"
+
+for acl in $(echo $ACLS|sed 's/,/ /'); do
+    dnsdist -c -e 'addAction(makeRule("'$acl'"), PoolAction("'$POOL'"))'
+    # add a ruleview in /etc/dnsdist.conf
+    sed -r -i '/^--ADDRULEVIEW/a \addAction(makeRule("'$acl'"), PoolAction("'$POOL'"))' "$CONF"
+done
+

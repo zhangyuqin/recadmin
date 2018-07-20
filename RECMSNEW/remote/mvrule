@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+if [ $# -ne 2 ]; then
+    echo "usage: $0 order neworder"
+    echo "example: $0 1 2"
+    echo "example: $0 3 2"
+    exit 1
+fi
+
+ORDER="$1"
+NEWORDER="$2"
+CONF="/etc/dnsdist/dnsdist.conf"
+
+dnsdist -c -e "mvRule($ORDER, $NEWORDER)"

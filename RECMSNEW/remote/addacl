@@ -1,0 +1,13 @@
+#!/bin/bash
+
+dnsdist -c -e "addACL(""'"$1"'"")"
+
+# todo
+# addacl in /etc/dnsdist.conf
+if egrep '^\s*addACL\("'"$1"'"\)' /etc/dnsdist/dnsdist.conf>/dev/null; then
+    :
+else
+    #sed -r -i '/^\s*access-control: 127.0.0.1 allow/a \ \ \ \ \ \ \  access-control: '"$acl"' allow' $cnf
+    sed -r -i '/^--ADDACL/a \addACL("'"$1"'")' /etc/dnsdist/dnsdist.conf
+fi
+

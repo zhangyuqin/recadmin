@@ -1,0 +1,30 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+NAME="$1"
+NEWNAME="$2"
+WEIGHT="$3"
+ORDER="$4"
+
+CONF="/etc/dnsdist/dnsdist.conf"
+SERVER_ID=$(dnsdist -c -e "showServers()" |grep -w "$NAME" |awk '{print $1}')
+
+if [ ! -z "$SERVER_ID" ]; then
+    dnsdist -c -e "getServer($SERVER_ID).weight=$WEIGHT"
+    dnsdist -c -e "getServer($SERVER_ID).order=$ORDER"
+    dnsdist -c -e "getServer($SERVER_ID).name='$NEWNAME'"
+
+    HAVE_SOURCE="$(grep -w $NAME $CONF |grep -w source |awk -F'source=' '{print $2}')" 
+    ADDRESS="$(grep -w $NAME $CONF |grep -w address |awk -F'address=' '{print $2}'|awk -F\" '{print $2}')" 
+
+    # delete old server
+    sed -i '/newServer({name="'$NAME'"''/d' $CONF
+
+    if [ ! -z "$HAVE_SOURCE" ]; then
+        SOURCE_ADDR="$(echo $HAVE_SOURCE|awk -F\" '{print $2}')"
+        sed -r -i '/^--ADDSERVER/a \newServer({name="'$NEWNAME'"'', address="'$ADDRESS'"'', weight='$WEIGHT', order='$ORDER', source="'$SOURCE_ADDR'"''})' "$CONF"
+    else
+        sed -r -i '/^--ADDSERVER/a \newServer({name="'$NEWNAME'"'', address="'$ADDRESS'"'', weight='$WEIGHT', order='$ORDER'})' "$CONF"
+    fi
+fi

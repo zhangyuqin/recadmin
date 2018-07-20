@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+
+if [ $# -ne 1 ]; then
+    echo "usage: $0 poolname"
+    echo "example: $0 edu"
+    exit 1
+fi
+
+NAME="$1"
+
+CONF="/etc/dnsdist/dnsdist.conf"
+
+dnsdist -c -e "getPool('$NAME'):unsetCache()"
+
+if [ $? -ne 0 ]; then
+    echo "$?"
+    exit 1
+fi
+
+# delete a cache from /etc/dnsdist.conf
+if egrep '^\s*'$NAME'=newPacketCache' "$CONF">/dev/null; then
+    sed -i /$NAME'=newPacketCache'/d "$CONF"
+    sed -i '/setCache('$NAME')'/d "$CONF"
+fi

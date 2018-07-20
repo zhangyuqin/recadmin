@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#
+# del dnsdist ACL
+#
+
+# delacl in dnsdist
+acl=$(dnsdist -c -e showACL'()' |grep -v add|grep -v $1)
+j=$(for i in $acl; do printf "'$i' "; done)
+ACL=`echo $j |sed 's/ /,/g'`
+dnsdist -c -e "setACL({$ACL})"
+
+# delacl in /etc/dnsdist/dnsdist.conf
+addr=$(printf "addACL(\"$1\")\n" | sed 's=/=\\/=')
+sed -i /$addr/d /etc/dnsdist/dnsdist.conf

@@ -1,0 +1,73 @@
+{% extends "recadmin/base.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="x_content">
+    <div class="x_content">
+         <div class="row">
+            <div class="page-title">
+                <div class="title_left">
+                    <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                        <button type="button" class="btn btn-primary btn-dlocal" data-toggle="modal" data-target=".modal-dlocal" title="add">新增私有域名</button>
+                        <!-- <button type="button" class="btn btn-primary btn-dlocal" data-toggle="modal" data-target=".modal-dlocal" title="upload">批量上传</button> -->
+                    </div>
+                </div>
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                      <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                      </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="table-responsive">
+           <table class="table table-striped jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="a-center">
+                            <input type="checkbox" id="check-all" class="flat">
+                        </th>
+                        <th class="column-title">本地域名</th>
+                        <th class="column-title">响应类型</th>
+                        <th class="column-title">链路</th>
+                        <th class="column-title no-link last"><span class="nobr">状态</span></th>
+                        <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                        <th class="bulk-actions" colspan="5">
+                            <div class="dropdown">
+                                <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">批量操作( <span class="action-cnt"> </span> )<span class="caret"></span></button>
+                                <ul class="dropdown-menu option-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation">
+                                        <a class="antoo" id="enable_data" name="/recadmin/{{recipient}}"><i class="fa fa-play">&nbsp&nbsp&nbsp&nbsp</i>启用</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a class="antoo" id="disable_data" name="/recadmin/{{recipient}}"><i class="fa fa-pause">&nbsp&nbsp&nbsp&nbsp</i>停用</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a class="antoo" id="del_data" name="/recadmin/{{recipient}}"><i class="fa fa-stop">&nbsp&nbsp&nbsp&nbsp</i>删除</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </th>
+                    </tr>
+               </thead>
+               <tbody id="node1"></tbody>
+           </table>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="modal fade modal-dlocal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-dlocal">
+        </div>
+    </div>
+</div>
+
+{% endblock %} 
+{% block js %}
+<script src="{% static 'recadmin/js/dlocal.js' %}"></script>
+{% endblock js %}
+

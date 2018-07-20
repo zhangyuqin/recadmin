@@ -1,0 +1,19 @@
+#!/bin/bash
+
+acl="$1"
+shift
+domains="$@"
+
+for domain in $domains; do
+    # runtime
+    if grep -q "addAction(AndRule({makeRule("'"'$acl'"'"), makeRule("'"'$domain'")}), PoolAction("114dns"))' /etc/dnsdist/dnsdist.conf; then
+        :
+    else
+        dnsdist -c -e "addAction(AndRule({makeRule("'"'$acl'"'"), makeRule("'"'$domain'")}), PoolAction("114dns"))'
+
+        # update config
+        sed -r -i '/^--ADDDOMAINACL/a \addAction(AndRule({makeRule(''"'$acl'"'"), makeRule("'"'$domain'")}), PoolAction("114dns"))'                                                           /etc/dnsdist/dnsdist.conf
+    fi
+done
+
+

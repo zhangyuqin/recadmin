@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#
+# del dnsdist ACL
+#
+
+udelacl() {
+    local cnf="$1"
+    local acl="$2"
+
+    if egrep -q '^\s+access-control: '"$acl" $cnf; then
+        sed -r -i '/^\s+access-control: '"$acl"' allow/d' $cnf
+    fi
+}
+
+udelACL "$1" "$2"

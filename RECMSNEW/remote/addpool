@@ -1,0 +1,40 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+if [ $# -ne 4 ]; then
+    echo "usage: $0 name servers policy cache"
+    echo "example: $0 edu edu-rec1,edu-rec2 whash edu"
+    exit 1
+fi
+
+NAME="$1"
+SERVERS="$2" # server name
+POLICY="$3"
+CACHE="$4"
+
+CONF="/etc/dnsdist/dnsdist.conf"
+
+
+for s in $(echo $SERVERS|sed 's/,/ /g'); do
+    SERVER_ID="$(dnsdist -c -e "showServers()" |grep -w "$s" |awk '{print $1}')"
+    dnsdist -c -e "getServer($SERVER_ID):addPool('$NAME')"
+    
+
+    # set server's pool in /etc/dnsdist.conf
+    if egrep '^\s*newServer\({name="'$s'"' "$CONF">/dev/null; then
+        sed -r -i 's/newServer\(\{name="'$s'"''(.*)\}\)/newServer\(\{name="'$s'"''\1, pool="'$NAME'"\}\)/' $CONF
+    fi
+done
+
+# set policy and cache
+dnsdist -c -e "setPoolServerPolicy($POLICY, '$NAME')"
+dnsdist -c -e "getPool('$NAME'):setCache($CACHE)"
+
+# set policy and cache in /etc/dnsdist/dnsdist.conf
+#echo "^setPoolServerPolicy($POLICY, '$NAME')"
+grep "^setPoolServerPolicy($POLICY, '$NAME')" $CONF||sed -i '$a\setPoolServerPolicy\('$POLICY', '"'$NAME'"'\)'  $CONF
+grep "^getPool('$NAME'):setCache" $CONF||sed -i '$a\getPool\('"'$NAME'"'\):setCache\('$CACHE'\)'  $CONF
+sed -r -i 's/setPoolServerPolicy\((.*), '"'$NAME'"'\)/setPoolServerPolicy\('$POLICY', '"'$NAME'"'\)/' $CONF
+sed -r -i 's/getPool\('"'$NAME'"'\):setCache\((.*)\)/getPool\('"'$NAME'"'\):setCache\('$CACHE'\)/' $CONF
+

@@ -1,0 +1,3 @@
+unbound-control dump_cache >/tmp/u.cache
+unbound-control reload
+unbound-control load_cache </tmp/u.cache >/dev/null

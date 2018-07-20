@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#
+# 删除防污染ACL对应的domain
+#
+
+acls="$1"
+shift
+domains="$@"
+for acl in $(echo $acls |sed 's/,/ /'); do
+    for domain in $domains; do
+        # runtime
+        num=($(dnsdist -c -e "showRules()" |grep "(Src: $acl) && (qname in $domain.)"|awk '{print $1}'))
+        for n in ${num[@]}; do
+            if [ ! -z "$n" ]; then
+                dnsdist -c -e "rmRule($n)"
+            fi
+    
+            # update config
+            sed -i '\?addAction(AndRule({makeRule(''"'$acl'"'"), makeRule("'"'$domain'")}), PoolAction("114dns"))?d'                                                                  /etc/dnsdist/dnsdist.conf
+            #sed -r -i '\,addAction.*makeRule.*'$acl'.*makeRule.*'$domain,d /etc/dnsdist/dnsdist.conf
+        done
+    done
+done

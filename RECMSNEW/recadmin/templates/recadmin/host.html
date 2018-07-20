@@ -1,0 +1,39 @@
+{% extends "recadmin/base.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="x_content">
+    <div class="row">
+        <div class="page-title">
+            <div class="title_left">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                    <button type="button" class="btn btn-primary btn-host" data-toggle="modal" data-target=".modal-host" title="add">新增host列表</button>
+                </div>
+            </div>
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="table-responsive" id="node1">
+    </div>  
+</div>
+<div class="clear"></div>
+<div class="modal fade modal-host" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-host">
+        </div>
+    </div>
+</div>
+
+{% endblock %} 
+{% block js %}
+<script src="{% static 'recadmin/js/host.js' %}"></script>
+{% endblock js %}
+

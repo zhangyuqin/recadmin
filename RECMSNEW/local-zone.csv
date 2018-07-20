@@ -1,0 +1,11 @@
+twitter.com,redirect,yes
+twimg.com,deny,yes
+tinypic.com,redirect,yes
+twitpic.com,deny,yes
+tweetdeck.com,redirect,yes
+t.co,refuse,yes
+scholar.google.com,redirect,yes
+scholar.google.com.hk,redirect,
+scholar.google.co.jp,deny,
+dropbox.com,redirect,
+dropboxstatic.com,refuse,

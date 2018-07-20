@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+if [ $# -ne 1 ]; then
+    echo "usage: $0 poolname"
+    echo "example: $0 edu"
+    exit 1
+fi
+
+NAME="$1"
+
+CONF="/etc/dnsdist/dnsdist.conf"
+
+dnsdist -c -e "showServers()" >/tmp/pools.log
+SERVERS="$(awk '{if ($NF == "'$NAME'") print $1 }' /tmp/pools.log)"
+
+for sid in $SERVERS; do
+    # rm server's pool
+    dnsdist -c -e "getServer($sid):rmPool('$NAME')"
+done
+
+# delete server's pool in /etc/dnsdist.conf
+sed -r -i 's/newServer\(\{(.*), pool="'$NAME'"''\}\)/newServer\(\{\1\}\)/' $CONF
+sed -r -i '/setPoolServerPolicy\((.*), '"'$NAME'"'\)/d' $CONF

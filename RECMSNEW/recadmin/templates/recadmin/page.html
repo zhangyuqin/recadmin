@@ -1,0 +1,47 @@
+        <div class="btn-group" role="group">
+            <!-- 第一页 -->
+            <a class="btn btn-default btn-href" href="?page=1">
+                <span class="glyphicon glyphicon-step-backward"></span>
+            </a>
+
+            <!-- 上一页 -->
+            {% if contents.has_previous %}
+                <a class="btn btn-default btn-href" href="?page={{contents.previous_page_number}}">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            {% else %}
+                <a class="btn btn-default btn-href disabled">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            {% endif %}
+            <!-- 下一页 -->
+            {% if contents.has_next %}
+                <a class="btn btn-default btn-href" href="?page={{contents.next_page_number}}">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            {% else %}
+                <a class="btn btn-default btn-href disabled">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+            {% endif %}
+
+            <!-- 最后一页 -->
+            <a class="btn btn-default btn-href" href="?page={{contents.paginator.num_pages}}">
+                <span class="glyphicon glyphicon-step-forward"></span>
+            </a>
+            <span class="btn btn-default">
+                <select id="page">
+                    {% for p in range %}
+                        {% if p == contents.number %}
+                            <option value="?page={{p}}" class="option-href" selected>
+                                {{p}}
+                            </option>
+                        {% else %}
+                            <option value="?page={{p}}" class="option-href">
+                                {{p}}
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </span>
+        </div>

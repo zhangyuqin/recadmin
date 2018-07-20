@@ -1,0 +1,7 @@
+#!/bin/bash
+
+domain="$1"
+
+unbound-control flush_type "$domain" A >/dev/null
+unbound-control flush_type "$domain" AAAA >/dev/null
+unbound-control flush_type "$domain" CNAME >/dev/null

@@ -1,0 +1,46 @@
+.login{
+    background: url('../image/bg2.jpg') no-repeat fixed top;
+    background-size: 100% 100%;
+}
+.login-block{
+    width:350px;
+    position:absolute;
+    top:25%;
+    left:40%;
+}
+.login_form h1{
+    min-width: 350px;
+    color:#ffffff;
+    margin-left: 30px;
+}
+.login_form h1 img{
+    width: 50px;
+    margin-right: 15px;
+} 
+.login_content{
+    margin-top: 1
+}
+.login_content h1{
+    margin-bottom: 50px;
+    text-shadow: none;
+    color:#ffffff;
+}
+.login_content form div a{
+    width: 80px;
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: none;
+}
+#login-submit {
+    margin: 0;
+}
+.login-copyright p{
+    text-align: center;
+}
+.login-copyright img{
+    width:100px;
+    padding: 0 5px 0 15px;
+}
+.login-copyright hr{
+    width:120px;
+}

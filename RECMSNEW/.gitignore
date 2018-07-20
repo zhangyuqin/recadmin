@@ -1,0 +1,4 @@
+*.pyc
+*.sqlite3
+*/migrations/[0-9]*
+remote/pool_setting.sh

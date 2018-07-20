@@ -1,0 +1,282 @@
+{% extends "recadmin/base.html" %}
+{% load staticfiles %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href="{% static 'recadmin/vendors/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}">
+{% endblock css %}
+{% block content %}
+<div class="x_content">
+    <div>
+        <h2>历史访问查询</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h3>查询历史记录</h3>
+                </div>
+                <div class="x_content">
+                    <form class="form-horizontal" action="{% url 'recadmin:history' %}" method="get" onsubmit="return rehistory();">
+                        <div class="col-md-10 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="qname">域名或ip地址</label>
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <input type="text" class="form-control" id="qname" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">查询数量</label>
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <input type="number" class="form-control" name="qlimit" min="0" max="1000" value="100">
+                                </div>
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" style="text-align: left;">(范围0-1000，0表示无限制)</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">开始时间</label>
+                               <!--  <div class="col-md-8 demo">
+                                    <input type="text" id="search-time" class="form-control">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                    <input type="hidden" name="start" value="">
+                                    <input type="hidden" name="end" value="">
+                                </div> -->
+                                <div class='col-md-5 col-sm-5 col-xs-12'> 
+                                    <div class='input-group date' id='startDate'>
+                                        <input type='text' class="form-control" id='startinput' required="required"> 
+                                        <span class="input-group-addon">
+                                           <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" >结束时间</label>
+                                <div class='col-md-5 col-sm-5 col-xs-12'>
+                                    <div class='input-group date' id='endDate'>
+                                        <input type='text' class="form-control" id='endinput' required="required">
+                                        <span class="input-group-addon">
+                                           <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="record">模糊查询</label>
+                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                    <div class="switch switch-blue">
+                                        <input type="radio" class="switch-input" name="fuzz" value="1" id="addone">
+                                        <label for="addone" class="switch-label switch-label-off">开启</label>
+                                        <input type="radio" class="switch-input" name="fuzz" value="0" id="addzero" checked>
+                                        <label for="addzero" class="switch-label switch-label-on">关闭</label>
+                                        <span class="switch-selection"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-3">
+                                    <input type="hidden" name="start" value="">
+                                    <input type="hidden" name="end" value="">
+                                    <button type="submit" class="btn btn-success" id="search-history">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div> 
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h3>查询结果</h3>
+                </div>
+                <div class="x_content">
+                    {% if contents == 'no data'  %} 
+                    <p>no data</p>
+                    {% elif contents == false %}
+                    <p></p>
+                    {% else %}
+                     <table class="table table-striped jambo_table bulk_action">
+                        <thead>
+                          <tr class="headings">
+                            <!-- <th>
+                              <input type="checkbox" id="check-all" class="flat">
+                            </th> -->
+                            <th class="column-title">时间</th>
+                            <th class="column-title">域名</th>
+                            <th class="column-title">服务器</th>
+                            <th class="column-title">客户端</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for content in contents %}
+                                <tr class="even pointer">
+                                    <td class="">{{content.timestamp}}</td>
+                                    <td class="">{{content.qnameid.qname}}</td>
+                                    <td class="">{{content.serverid.server}}</td>
+                                    <td class="">{{content.clientid.client}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="btn-group" role="group">
+                        <!-- 第一页 -->
+                        <a class="btn btn-default btn-href" href="?page=1">
+                            <span class="glyphicon glyphicon-step-backward"></span>
+                        </a>
+
+                        <!-- 上一页 -->
+                        {% if contents.has_previous %}
+                            <a class="btn btn-default btn-href" href="?page={{contents.previous_page_number}}">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                        {% else %}
+                            <a class="btn btn-default btn-href disabled">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                        {% endif %}
+                        <!-- 下一页 -->
+                        {% if contents.has_next %}
+                            <a class="btn btn-default btn-href" href="?page={{contents.next_page_number}}">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        {% else %}
+                            <a class="btn btn-default btn-href disabled">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        {% endif %}
+
+                        <!-- 最后一页 -->
+                        <a class="btn btn-default btn-href" href="?page={{contents.paginator.num_pages}}">
+                            <span class="glyphicon glyphicon-step-forward"></span>
+                        </a>
+                        <span class="btn btn-default">
+                            <select id="page">
+                                {% for p in range %}
+                                    {% if p == contents.number %}
+                                        <option value="?page={{p}}" class="option-href"selected>
+                                            {{p}}
+                                        </option>
+                                    {% else %}
+                                        <option value="?page={{p}}" class="option-href">
+                                            {{p}}
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>    
+            </div> 
+        </div>               
+    </div>
+</div>
+{% endblock %} 
+{% block js %}
+<script src="{% static 'recadmin/vendors/moment/min/moment.min.js' %}"></script>
+<script src="{% static 'recadmin/vendors/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        var startdate = new Date();
+        var nowdate = startdate.getTime()-1000*10*60;
+        var nowtime = new Date(nowdate);
+        $('#startDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            defaultDate: nowtime
+        });
+        $('#endDate').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm', 
+            defaultDate: startdate
+        });
+        //获取qname 输入的值
+        $("#qname").change(function(){
+            var val = $(this).val();
+            console.log(val);
+            console.log(CheckUrl(val));
+            if(CheckUrl(val) == true){
+                $(this).attr('name','qname');
+            }else{
+                $(this).attr('name','client');
+            }
+        });
+        var qurls = GetRequest();
+        var hurs = '';
+        if(qurls.qname){
+            hurls = 'qname='+qurls.qname+'&qlimit='+qurls.qlimit+'&fuzz='+qurls.fuzz+'&start='+qurls.start+'&end='+qurls.end; 
+        }else{
+            hurls = 'client='+qurls.client+'&qlimit='+qurls.qlimit+'&fuzz='+qurls.fuzz+'&start='+qurls.start+'&end='+qurls.end; 
+        };
+        console.log(hurls);
+        $('.btn-href').each(function(key,value){
+            var bhref = $(this).attr('href');
+            if(bhref){
+                var btnhref = bhref +'&'+hurls;
+                $(this).attr('href',btnhref);
+            }
+            //console.log($(this).attr('href')); 
+        });
+        $('.option-href').each(function(key,value){
+            var opval = $(this).val();
+            var optval = opval +'&'+hurls;
+            $(this).attr('value',optval);
+        });
+        $("#page").on('change', function(){
+            location.href=this.options[this.selectedIndex].value;
+        });
+        // $('#search-history').on('click',function(){
+        //     var qname = $('#qname').attr('name');
+        //     var qval = $('#qname').val();
+        //     var starttime =  $("input[name='start']").val();
+        //     var endtime = $("input[name='end']").val();
+        //     $.ajax({
+        //          url:"/recadmin/history/",
+        //          data:qname+'='+qval+'&'+'start='+starttime+'&end='+endtime,
+        //          dataType:'json',
+        //          success:function(data){
+        //              console.log(data);
+        //          },
+        //          fail:function(err){
+        //              console.log(err);
+        //          }
+        //      });
+        //  });
+
+    });
+function rehistory(){
+    var time1 = $('#startinput').val();
+    var time2 = $('#endinput').val();
+    console.log(time1);
+    console.log(time2);
+    var starttime = Date.parse(new Date(time1))/1000;
+    var endtime = Date.parse(new Date(time2))/1000;
+    console.log(starttime);
+    console.log(endtime);
+    if(parseInt(endtime) <= parseInt(starttime)){
+        alert("时间选择不合法");
+        return false;
+    }else{
+        console.log(22222);
+        $("input[name='start']").val(starttime);
+        $("input[name='end']").val(endtime);
+        $('.btn-success').attr('disabled','disabled');
+        return true;
+    }
+}  
+function GetRequest() {
+   var url = location.search; //获取url中"?"符后的字串
+   var theRequest = new Object();
+   if (url.indexOf("?") != -1) {
+      var str = url.substr(1);
+      strs = str.split("&");
+      for(var i = 0; i < strs.length; i ++) {
+         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+      }
+   }
+   return theRequest;
+} 
+function CheckUrl(str) {
+    var RegUrl = new RegExp();
+    RegUrl.compile("([a-z0-9]([\\w]*[a-z0-9])*\\.)?[a-z0-9]\\w*\\.[a-z]{2,}(\\.[a-z]{2,})?|^\.$");
+    if (!RegUrl.test(str)) {
+        return false;
+    }
+    return true;
+} 
+</script>
+{% endblock js %}

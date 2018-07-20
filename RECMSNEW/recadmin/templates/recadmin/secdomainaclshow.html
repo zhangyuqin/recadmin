@@ -1,0 +1,62 @@
+{% extends "recadmin/base.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="x_panel">
+<div class="x_content">
+    <div class="row">
+        <div class="page-title">
+            <div class="title_left">
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                <button type="button" class="btn btn-primary btn-secdomain" data-toggle="modal" data-target=".modal-secdomain" title="add">新增防污染域名acl</button>
+                </div>
+            </div>
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." id="search">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default btn-search" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped jambo_table bulk_action">
+            <thead>
+              <tr class="headings">
+                <th class="a-center">
+                  <input type="checkbox" id="check-all" class="flat">
+                </th>
+                <!-- <th class="column-title">ID</th> -->
+                <th class="column-title">ACL</th>
+                <th class="column-title">分组</th>
+                <th class="column-title no-link last"><span class="nobr">备注</span>
+                </th>
+                <th class="column-title no-link last"><span class="nobr">状态</span>
+                </th>
+                <th class="column-title no-link last"><span class="nobr">操作</span>
+                </th>
+                <th class="bulk-actions" colspan="5">
+                    {% include "recadmin/batch_operate.html" %}
+                </th>
+              </tr>
+            </thead>
+            <tbody id="node1">
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<div class="clear"></div>
+<div class="modal fade modal-secdomain" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-secdomain">   
+        </div>
+    </div>
+</div>
+{% endblock %} 
+{% block js %}
+<script src="{% static 'recadmin/js/secdomainaclshow.js' %}"></script>
+{% endblock js %}

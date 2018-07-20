@@ -1,0 +1,55 @@
+{% extends "recadmin/base.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="x_content">
+    <div class="row">
+        <div class="page-title">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary btn-server" data-toggle="modal" data-target=".modal-server" title= "add">新增解析服务器</button>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right top_search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+        </div> 
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped jambo_table bulk_action">
+           <thead>
+                <tr class="headings">
+                    <th class="a-center">
+                        <input type="checkbox" id="check-all" class="flat">
+                    </th>
+                    <th class="column-title">名称</th>
+                    <th class="column-title">地址</th>
+                    <th class="column-title">源地址</th>
+                    <th class="column-title">优先级</th>
+                    <th class="column-title">权重</th>
+                    <th class="column-title">备注</th>
+                    <th class="column-title">类型</th>
+                    <th class="column-title no-link last"><span class="nobr">状态</span></th>
+                    <th class="column-title no-link last"><span class="nobr">操作</span></th>
+                    <th class="bulk-actions" colspan="8">
+                        <a class="antoo" id="del_data" name="server">批量删除 ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="node1"></tbody>
+        </table>
+    </div>
+</div>
+<div class="clear"></div>
+<div class="modal fade modal-server" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-server">
+        </div>
+    </div>
+</div>
+{% endblock %} 
+{% block js %}
+<script src="{% static 'viewadmin/js/server.js' %}"></script>
+{% endblock js %}

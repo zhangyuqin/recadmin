@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+#addAction(AndRule({makeRule("240c:f:1:4000::/64"), makeRule("twblogger.com")}), PoolAction("114dns"))
+
+if [ $# -ne 3 ]; then
+    echo "usage: $0 acls domains poolname"
+    echo "example: $0 192.168.0.0/24,192.168.1.0/24 youku.com,qq.com edu"
+    echo "example: $0 192.168.0.0/24 youku.com edu"
+    exit 1
+fi
+
+ACLS="$1"
+DOMAINS="$2"
+POOL="$3"
+CONF="/etc/dnsdist/dnsdist.conf"
+
+for acl in $(echo "$ACLS"|sed 's/,/ /g'); do
+    for domain in $(echo "$DOMAINS"|sed 's/,/ /g'); do
+        dnsdist -c -e 'addAction(AndRule({makeRule("'$acl'"), makeRule("'$domain'")}), PoolAction("'$POOL'"))'
+        # add a ruletraffic in /etc/dnsdist.conf
+        sed -r -i '/^--ADDRULETRAFFIC/a \addAction(AndRule({makeRule("'$acl'"), makeRule("'$domain'")}), PoolAction("'$POOL'"))' "$CONF"
+    done
+done

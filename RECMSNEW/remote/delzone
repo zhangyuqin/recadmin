@@ -1,0 +1,3 @@
+#!/bin/bash
+
+dnsdist -c -e "getPool"'(""):getCache():expungeByName(newDNSName("'$1'"), dnsdist.ANY, true)'

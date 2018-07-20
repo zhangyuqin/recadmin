@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+NAME="$1"
+CONF="/etc/dnsdist/dnsdist.conf"
+SERVER_ID=$(dnsdist -c -e "showServers()" |grep -w "$NAME" |awk '{print $1}')
+
+if [ ! -z "$SERVER_ID" ]; then
+    dnsdist -c -e "rmServer($SERVER_ID)"
+    if egrep '^\s*newServer\({name="'$NAME'"' "$CONF">/dev/null; then
+        sed -i '/newServer({name="'$NAME'"''/d' $CONF
+    fi
+fi

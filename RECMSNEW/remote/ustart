@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if pgrep unbound>/dev/null; then
+      unbound-control stop
+      unbound-control start
+else
+      unbound-control start
+fi
+

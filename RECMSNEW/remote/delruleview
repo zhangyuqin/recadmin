@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+# del dnsdist rule
+#5           0 Src: 192.168.2.0/24                                to pool bii
+
+if [ $# -ne 2 ]; then
+    echo "usage: $0 acls poolname"
+    echo "example: $0 192.168.0.0/24,192.168.1.0/24 edu"
+    echo "example: $0 192.168.0.0/24 edu"
+    exit 1
+fi
+
+ACLS="$1"
+POOL="$2"
+CONF="/etc/dnsdist/dnsdist.conf"
+
+for acl in $(echo $ACLS|sed 's/,/ /'); do
+     #num=$(dnsdist -c -e "showRules()" |grep "(Src: $acl) && (qname in $domain.)"|awk '{print $1}')
+     num=$(dnsdist -c -e "showRules()" |egrep "Src: $acl\s* to pool $POOL"|awk '{print $1}')
+     for n in $num; do
+         if [ -z "$n" ]; then
+             :
+         else
+             if [ "$n" -ge 0 ]; then
+                 dnsdist -c -e "rmRule($n)"
+             fi
+         fi
+     done
+
+    # del a ruleview in /etc/dnsdist.conf
+    sed -i '\#^addAction(makeRule("'$acl'"), PoolAction("'$POOL'"))#d' "$CONF"
+done
+

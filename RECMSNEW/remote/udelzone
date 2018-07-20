@@ -1,0 +1,3 @@
+#!/bin/bash
+
+unbound-control flush_zone "$1" >/dev/null

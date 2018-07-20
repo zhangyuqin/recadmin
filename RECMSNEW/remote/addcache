@@ -1,0 +1,34 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+
+if [ $# -ne 7 ]; then
+    echo "usage: $0 name entries maxttl minttl servfailttl stalettl keeepttl"
+    echo "example: $0 edu 500000 86400 0 60 60 false"
+    exit 1
+fi
+
+NAME="$1"
+ENTRIES="$2"
+MAXTTL="$3"
+MINTTL="$4"
+SERVFAIL="$5"
+STALE="$6"
+KEEPTTL="$7"
+
+CONF="/etc/dnsdist/dnsdist.conf"
+
+dnsdist -c -e "$NAME=newPacketCache($ENTRIES, $MAXTTL, $MINTTL, $SERVFAIL, $STALE, $KEEPTTL)"
+
+if [ $? -ne 0 ]; then
+    echo "$?"
+    exit 1
+fi
+
+# add a cache in /etc/dnsdist.conf
+if egrep '^\s*'$NAME'=newPacketCache' "$CONF">/dev/null; then
+    :
+else
+    sed -r -i '/^--ADDCACHE/a \'$NAME'=newPacketCache('$ENTRIES', '$MAXTTL', '$MINTTL', '$SERVFAIL', '$STALE', '$KEEPTTL')' "$CONF"
+fi

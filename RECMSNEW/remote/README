@@ -1,0 +1,28 @@
+## 功能
+
+* 通过SSH远程管理DNS 递归服务器
+* cache管理功能
+* acl 管理
+* 配置同步功能[转发域名，本地域]
+
+## 实现介绍
+  * 对各个节点进行ssh public key 登陆配置
+
+  * 管理节点入口脚本
+    * dnsm.sh
+    * 配置模块
+       * 设置部署模式，管理节点
+       * setting.sh
+
+  * 递归节点脚本
+    * 部分功能实现脚本部署在递归服务器上
+    * delname, delzone, addacl
+
+## 待实现功能
+  * dnsdist acl 在配置文件中删除功能,
+  * unbound 转发域，本地域同步功能:
+  * unbound only 模式下：多节点管理功能:
+    * acl管理： uaddacl, udelacl
+    * cache管理： udelname, udelzone
+    * 本地域,转发域，配置同步
+  * 数据统计功能

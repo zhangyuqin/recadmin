@@ -1,0 +1,71 @@
+{% extends "recadmin/base.html" %}
+{% load staticfiles %}
+{% block content %}
+<div class="x_content">
+    <div class="col-md-4">
+        <button type="button" class="btn btn-primary btn-control" data-toggle="modal" data-target=".modal-dforward" title="add">新增用户地址段</button>
+    </div>
+    <div class="col-md-4">
+        <form class="form-horizontal" role="search">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-primary">Go!</button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="clear"></div>
+    <div class="table-responsive">
+        <table class="table table-striped jambo_table bulk_action">
+            <thead>
+              <tr class="headings">
+                <th>
+                  <input type="checkbox" id="check-all" class="flat">
+                </th>
+               <!--  <th class="column-title">id</th> -->
+                <th class="column-title">名字</th>
+                <th class="column-title">ACL</th>
+                <th class="column-title no-link last"><span class="nobr">是否启用</span>
+                </th>
+                <th class="column-title no-link last"><span class="nobr">操作</span>
+                </th>
+                <th class="bulk-actions" colspan="4">
+                    {% include "recadmin/batch_operate.html" %}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for content in contents %}
+                    <tr class="even pointer">
+                        <td class="a-center ">
+                            <input type="checkbox" class="flat" name="table_records" value="{{content.id}}">
+                        </td>
+                        <td class="d-content" title="id">{{content.id}}</td>
+                        <td class="d-content" title="name">{{content.name}}</td>
+                        <td class="d-content" title="acl">{{content.acl}}</td>
+                        <td class="d-content" title="status">{{content.status}}</td>
+                        <td class="last">
+                        <button type="button" class="btn-control" data-toggle="modal" data-target=".modal-dforward" title="update">更新</button> | <a href="{% url 'recadmin:del' recipient=recipient id=content.id %}">删除</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include "recadmin/page.html" %}
+    </div>
+</div>
+<div class="clear"></div>
+<div class="modal fade modal-dforward" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="modal-control">
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    window.csrf_token = "{{csrf_token}}";
+</script>
+<script src="{% static 'recadmin/js/pagemsg.js' %}"></script>
+<script src="{% static 'recadmin/js/dcontrol.js' %}"></script>
+{% endblock js %}  

@@ -1,0 +1,43 @@
+#!/bin/bash
+
+echo "$@" argument: "$#"
+
+#newServer({name="", address="", weight=1, order=1, source=""})
+# add a new server for dnsdist
+#dnsdist -c -e "addACL(""'"$1"'"")"
+
+if [ $# -ne 4 ]; then
+    echo "usage: $0 name address weight order [source_address]"
+    echo "example: $0 xxx-rec1 240c:f:1:xx::yy 1 1 240c:f:1:xx::yy"
+    echo "example: $0 xxx-rec1 240c:f:1:xx::yy 1 1"
+    exit 1
+fi
+
+NAME="$1"
+ADDRESS="$2"
+WEIGHT="$3"
+ORDER="$4"
+SOURCE="$5"
+CONF="/etc/dnsdist/dnsdist.conf"
+
+# todo
+# check ipv6 address
+
+if [ ! -z $SOURCE ]; then
+    dnsdist -c -e "newServer({name=""'"$NAME"'"', address='"'"$ADDRESS"'"', weight='$WEIGHT', order='$ORDER', source='"'"$SOURCE"'"'})' >/dev/null
+else
+    dnsdist -c -e "newServer({name=""'"$NAME"'"', address='"'"$ADDRESS"'"', weight='$WEIGHT', order='$ORDER'})' >/dev/null
+fi
+
+if [ $? -ne 0 ]; then
+    echo "$?"
+    exit 1
+fi
+
+# add a server in /etc/dnsdist.conf
+if egrep '^\s*newServer\({name="'$NAME'"' "$CONF">/dev/null; then
+    :
+else
+    test -z "$SOURCE" && sed -r -i '/^--ADDSERVER/a \newServer({name="'$NAME'"'', address="'$ADDRESS'"'', weight='$WEIGHT', order='$ORDER'})' "$CONF"
+    test -z "$SOURCE" || sed -r -i '/^--ADDSERVER/a \newServer({name="'$NAME'"'', address="'$ADDRESS'"'', weight='$WEIGHT', order='$ORDER', source="'$SOURCE'"''})' "$CONF"
+fi

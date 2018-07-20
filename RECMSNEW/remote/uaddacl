@@ -1,0 +1,14 @@
+#!/bin/bash
+
+uaddacl() {
+    local cnf="$1"
+    local acl="$2"
+    if egrep '^\s+access-control: '"$acl" $cnf>/dev/null; then
+        :
+    else
+        sed -r -i '/^\s+access-control: 127.0.0.1 allow/a \ \ \ \ \ \ \  access-control: '"$acl"' allow' $cnf
+    fi
+
+}
+
+uaddacl "$1" "$2"

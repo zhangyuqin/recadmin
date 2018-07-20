@@ -1,0 +1,117 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>递归管理系统</title>
+    <link href="{% static 'recadmin/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'recadmin/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/css/switch.css' %}" rel="stylesheet">
+    {% block css %}{% endblock css %}
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="{% url 'recadmin:index' %}" class="site_title">
+                            <!-- <i class="fa fa-cog"></i>  -->
+                            <img src="{% static 'recadmin/image/logo-color.png' %}" alt="" style="width:40px;">
+                            <span style="color:#00D6F2;">递归管理系统</span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <!-- <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="{% static 'recadmin/image/admin.png' %}" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>    
+                            <h2>admin</h2>
+                        </div>
+                    </div> -->
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>帮助中心</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-home"></i>
+                                        版本信息<span class="label label-success pull-right"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i class="fa fa-edit"></i>
+                                        个人中心<span class="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">用户名密码</a></li>
+                                        <li><a href="#">上传照片</a></li>
+                                        <li><a href="#">版权信息</a></li>
+                                        <li><a href="#">其他</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="siderbar-copyright">
+                        <hr />
+                        <img src="{% static 'recadmin/image/cfiec-B.png' %}" alt="">
+                        <p>Copyright ©2017</p>
+                        <p class="copy-name">CFIEC 下一代互联网国家工程中心</p>
+                    </div>
+                </div>
+            </div>
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="logout" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{% static 'recadmin/image/admin.png' %}" alt="">admin
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <!-- <li><a href="javascript:;">Help</a></li> -->
+                                    <li><a href="{% url 'recadmin:logout' %}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="right_col" role="main">
+              <!-- top tiles -->
+                {% block content %}
+                {% endblock %}
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <footer></footer>
+        </div>
+    </div>      
+    <script src="{% static 'recadmin/vendors/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'recadmin/vendors/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'recadmin/vendors/iCheck/icheck.min.js' %}"></script>
+    {% block js %}{% endblock js %}
+    <script src="{% static 'recadmin/js/custom.js' %}"></script>
+
+</body>
+</html>

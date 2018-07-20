@@ -1,0 +1,52 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>递归管理系统</title>
+    <link href="{% static 'recadmin/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'recadmin/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/css/login.css' %}" rel="stylesheet">
+  </head>
+
+  <body class="login">
+      <div class="login-block">
+        <div class="animate form login_form">
+          <h1><img src="{% static 'recadmin/image/login-logo.png' %}" alt="">递归管理系统</h1>
+          <section class="login_content">
+             <form method="POST" role="form">
+             {% csrf_token %}
+             <!--  <h1>用户登录</h1>   -->
+              <div class="clearfix"></div>
+              <div>
+                <input type="text" class="form-control" placeholder="用户名" required="" name="username"/>
+              </div>
+              <div>
+                <input type="password" class="form-control" placeholder="密码" required="" name="password"/>
+              </div>
+                 <div>
+                     <input type="password" class="form-control" placeholder="确认密码" required="" name="password2"/>
+                 </div>
+              <div>
+                <input type="submit" class="btn btn-success form-control" value="注册" id="login-submit"/>
+              </div>
+
+              <div class="clearfix"></div>
+
+                <br />
+
+                <div class="login-copyright">
+                  <p>Copyright ©2017 CFIEC 下一代互联网国家工程中心</p>
+                  <hr style="float:left;"/> 
+                  <img src="{% static 'recadmin/image/cfiec-logo.png' %}" alt="">
+                  <hr style="float:right;"/>
+                </div> 
+              </div>
+            </form>
+          </section>
+        </div>
+    </div>
+  </body>
+</html>

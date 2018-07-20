@@ -1,0 +1,213 @@
+{% extends "recadmin/base.html" %}
+{% load staticfiles %}
+{% block css %}
+<link type="text/css" rel="stylesheet" href="{% static 'recadmin/css/graph.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'recadmin/css/detail.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'recadmin/css/legend.css' %}">
+<link type="text/css" rel="stylesheet" href="{% static 'recadmin/css/lines.css' %}">
+{% endblock css%}
+{% block content %}
+<style type="text/css">
+.chart_container {
+  top: 25px;
+  position: relative;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.chart {
+  position: relative;
+  left: 40px;
+}
+.y_axis {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+}
+.legend {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 610px;
+  width: 150px;
+}
+.rickshaw_graph .x_tick .title {
+  bottom: -24px;
+  left: -18px;
+}
+.bread{
+  height: 30px;
+}
+</style>
+<div class="row tile_count">
+  <!-- <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-clock-o"></i>运行时间</span>
+    <div class="count" id="uptime">一周</div>
+    <div class="count" id="uptime">一周</div>
+  </div>
+  <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i>总查询量</span>
+    <div class="count green" id="questions"></div>
+    <div class="count green" id="questions">一万</div>
+  </div>
+  <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i>qps</span>
+    <div class="count" id="qps"></div>
+  </div>
+  <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i>缓存命中次数</span>
+    <div class="count" id="cache-hits"></div>
+  </div>
+  <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i>缓存失效次数</span>
+    <div class="count" id="cache-misses"></div>
+  </div>
+  <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+    <span class="count_top"><i class="fa fa-user"></i>内存使用</span>
+    <div class="count" id="memory"></div>
+  </div> -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>节点</th>
+        <th>运行时间</th>
+        <th>总查询量</th>
+        <th>qps</th>
+        <th>缓存命中次数</th>
+        <th>缓存失效次数</th>
+        <th>内存使用</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">节点一</th>
+        <td><div class="count" id="uptime">一周</div></td>
+        <td><div class="count green" id="questions"></div></td>
+        <td><div class="count" id="qps"></div></td>
+        <td><div class="count" id="cache-hits"></div></td>
+        <td><div class="count" id="cache-misses"></div></td>
+        <td><div class="count" id="memory"></div></td>
+      </tr>
+      <tr>
+        <th scope="row">节点二</th>
+        <td><div class="count" id="uptime">一周</div></td>
+        <td><div class="count green" id="questions"></div></td>
+        <td><div class="count" id="qps"></div></td>
+        <td><div class="count" id="cache-hits"></div></td>
+        <td><div class="count" id="cache-misses"></div></td>
+        <td><div class="count" id="memory"></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="dashboard_graph">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-6">
+                    <div class="col-md-8">
+                      <h4>TOP-10 域名</h4>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-control" name="" id="" style="margin-top: 5px;">
+                        <option value="">全部</option>
+                        <option value="">节点一</option>
+                        <option value="">节点二</option>
+                      </select> 
+                    </div>
+                </div>
+                <div id="top-domain"></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-6">
+                    <div class="col-md-8">
+                      <h4>TOP-10 用户</h4>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-control" name="" id="" style="margin-top: 5px;">
+                        <option value="">全部</option>
+                        <option value="">节点一</option>
+                        <option value="">节点二</option>
+                      </select> 
+                    </div>
+                </div>
+                <div id="top-client"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-6">
+                    <div class="col-md-8">
+                      <h4>TOP-10 不存在的域名</h4>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-control" name="" id="" style="margin-top: 5px;">
+                        <option value="">全部</option>
+                        <option value="">节点一</option>
+                        <option value="">节点二</option>
+                      </select> 
+                    </div>
+                </div>
+                <div id="top-nxdomain"></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-6">
+                    <div class="col-md-8">
+                      <h4>TOP-10 临时故障域名</h4>
+                    </div>
+                    <div class="col-md-4">
+                      <select class="form-control" name="" id="" style="margin-top: 5px;">
+                        <option value="">全部</option>
+                        <option value="">节点一</option>
+                        <option value="">节点二</option>
+                      </select> 
+                    </div>
+                </div>
+                <div id="top-servfail"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div class="bread"></div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <form action="">    
+        <table width="600">
+          <tr>
+            <td align="right">
+              <select id="server" onchange="updateFromForm();" onkeyup="updateFromForm();" name="server"></select>
+            </td>
+            <td align="right">
+              <select id="duration" onchange="updateFromForm();" onkeyup="updateFromForm();" name="duration">
+                <option value="-900">15 Minutes</option>
+                <option value="-3600">1 Hour</option>
+                <option value="-7200" selected="selected">2 Hours</option>
+                <option value="-14400">4 Hours</option>
+                <option value="-21600">6 Hours</option>   
+                <option value="-43200">12 Hours</option>
+                <option value="-86400">1 Day</option>
+                <option value="-172800">2 Days</option>
+                <option value="-604800">1 Week</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <div id="graphs"></div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+    <div class="bread"></div>
+</div>
+{% endblock %} 
+{% block js %}
+<script src="{% static 'recadmin/js/d3.v3.js' %}"></script>
+<script src="{% static 'recadmin/js/rickshaw.min.js' %}"></script>
+<script src="{% static 'recadmin/js/purl.js' %}"></script>
+<script src="{% static 'recadmin/js/engine.js' %}"></script>
+<script src="{% static 'recadmin/js/local.js' %}"></script>
+<script src="{% static 'recadmin/js/graphs.js' %}"></script> 
+
+<script src="{% static 'recadmin/js/moment-with-locales.js' %}"></script>
+<script src="{% static 'recadmin/js/data.js' %}"></script>
+<script src="{% static 'recadmin/js/index.js' %}"></script>
+{% endblock js %}

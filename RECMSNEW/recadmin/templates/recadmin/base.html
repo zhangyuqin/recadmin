@@ -1,0 +1,229 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>递归管理系统</title>
+    <link href="{% static 'recadmin/vendors/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'recadmin/vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/css/switch.css' %}" rel="stylesheet">
+    <link href="{% static 'recadmin/css/crud.css' %}" rel="stylesheet">
+    {% block css %}{% endblock css %}
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="{% url 'recadmin:index' %}" class="site_title">
+                            <!-- <i class="fa fa-cog"></i>  -->
+                            <img src="{% static 'recadmin/image/logo-color.png' %}" alt="" style="width:40px;">
+                            <span style="color:#00D6F2;">递归管理系统</span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <!-- <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img src="{% static 'recadmin/image/admin.png' %}" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>    
+                            <h2>admin</h2>
+                        </div>
+                    </div> -->
+                    <!-- /menu profile quick info -->
+
+                    <br />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>功能列表</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="{% url 'recadmin:index' %}">
+                                        <!-- <i class="fa fa-home"></i> -->
+                                        <img src="{% static 'recadmin/image/icon/state.png' %}" alt="">
+                                        服务状态<span class="label label-success pull-right"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <!-- <i class="fa fa-edit"></i> -->
+                                        <img src="{% static 'recadmin/image/icon/url.png' %}" alt="">
+                                        域名管理<span class="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/recadmin/dforward/">域名转发</a></li>
+                                        <li><a href="/recadmin/dlocal/">私有域名</a></li>
+                                        <li><a href="/recadmin/dlocaldata/">本地数据</a></li>
+                                        <li><a href="/recadmin/dsecurity/">白名单</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <!-- <i class="fa fa-edit"></i> -->
+                                        <img src="{% static 'recadmin/image/icon/acl.png' %}" alt="">
+                                        ACL防污染<span class="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/recadmin/domaingrp/">域名分组</a></li>
+                                        <li><a href="/recadmin/secdomainacl/">防污染域名ACL</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a>
+                                        <i class="fa fa-edit"></i>
+                                        多链路管理<span class="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul class="nav child_menu">
+                                        <li><a>链路配置<span class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                <li><a href="/viewadmin/server/">解析服务器</a>
+                                                </li>
+                                                <li><a href="/viewadmin/cacheconfig/">缓存配置</a>
+                                                </li>
+                                                <li class="sub_menu"><a href="/viewadmin/pool/">运营商</a>
+                                                </li>
+                                            </ul>
+
+                                        </li>
+                                        <li><a href="/viewadmin/ruleview/">DNS视图</a>
+                                           <!--  <ul class="nav child_menu">
+                                               <li><a href="#level2_1">源IP地址地址段</a>
+                                               </li>
+                                               <li><a href="#level2_2">目的IP</a>
+                                               </li>
+                                               <li><a href="#level2_2">域名</a>
+                                               </li>
+                                           </ul> -->
+                                        </li>
+                                        <li>
+                                            <a>
+                                                流量调度<span class="fa fa-chevron-down"></span>
+                                            </a>
+                                            <ul class="nav child_menu">
+                                               <li><a href="/viewadmin/topdomain/">热门域名</a>
+                                               </li>
+                                               <li><a href="/viewadmin/ruletraffic/">流量调度</a>
+                                               </li>
+                                               <!-- <li><a href="#level2_2">目的IP</a>
+                                               </li>
+                                               <li><a href="#level2_2">查询类型</a>
+                                               </li> -->
+                                           </ul> 
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="/recadmin/dcache/">
+                                        <!-- <i class="fa fa-desktop"></i> -->
+                                        <img src="{% static 'recadmin/image/icon/cache.png' %}" alt="">
+                                        缓存管理<span class="label label-success pull-right"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/recadmin/dhistory/">
+                                        <!-- <i class="fa fa-desktop"></i> -->
+                                        <img src="{% static 'recadmin/image/icon/history.png' %}" alt="">
+                                        历史访问查询<span class="label label-success pull-right"></span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>
+                                        <!-- <i class="fa fa-clone"></i> -->
+                                        <img src="{% static 'recadmin/image/icon/visit.png' %}" alt="">
+                                        高级规则<span class="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#level2_1">强制解析</a>
+                                        </li>
+                                        <li><a href="#level2_2">域名解析限速</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!--<li><a href="/recadmin/realtime"><i class="fa fa-home"></i>实时访问统计<span class="label label-success pull-right"></span></a>
+                                </li> -->
+                                <li>
+                                    <a>
+                                        <!-- <i class="fa fa-windows"></i> -->
+                                        <img src="{% static 'recadmin/image/icon/history.png' %}" alt="">
+                                        系统管理功能<span class="fa fa-chevron-down"></span>
+                                    </a>
+                                    <ul class="nav child_menu">
+                                        <li><a>服务管理</a>
+                                        </li>
+                                        <li><a href="#level2_2">系统管理</a>
+                                        </li>
+                                        <li>
+                                            <a>用户管理<span class="fa fa-chevron-down"></a>
+                                            <ul class="nav child_menu">
+                                                <li><a href="#level2_1">权限管理</a>
+                                                </li>
+                                                <li><a href="#level2_2">皮肤管理</a>
+                                                </li>
+                                                <li><a href="#level2_2">密码管理</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="siderbar-copyright">
+                        <hr />
+                        <img src="{% static 'recadmin/image/cfiec-B.png' %}" alt="">
+                        <p>Copyright ©2017</p>
+                        <p class="copy-name">CFIEC 下一代互联网国家工程中心</p>
+                    </div>
+                </div>
+            </div>
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="logout" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="{% static 'recadmin/image/admin.png' %}" alt="">admin
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="{% url 'recadmin:help' %}">Help</a></li>
+                                    <li><a href="{% url 'recadmin:logout' %}"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="right_col" role="main">
+              <!-- top tiles -->
+                {% block content %}
+                {% endblock %}
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <footer></footer>
+        </div>
+    </div>      
+    <script src="{% static 'recadmin/vendors/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'recadmin/vendors/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'recadmin/vendors/iCheck/icheck.min.js' %}"></script>
+    <script src="{% static 'recadmin/js/bootstrap-paginator.js' %}"></script>
+    {% block js %}{% endblock js %}
+    <script src="{% static 'recadmin/js/custom.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends "recadmin/base.html" %}
+{% block content %}
+<form class="form-horizontal form-label-left" action="add" method="post" onsubmit="return resubmit()">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">名称</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {{ form.name }}
+            <span>{{ error.name }}</span>
+        </div>    
+    </div>
+    <div class="form-group">
+        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+            <button class="btn btn-primary" type="button" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-success">确定</button>
+        </div>
+    </div>    
+</form>
+{% endblock %} 
