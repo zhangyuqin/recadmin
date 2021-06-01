@@ -11,6 +11,6 @@ psycopg2==2.7.4
 PyJWT==1.5.3
 pytz==2017.2
 requests==2.18.4
-urllib3==1.22
+urllib3==1.26.5
 dnspython3==1.15.0
 django-filter==2.0.0
